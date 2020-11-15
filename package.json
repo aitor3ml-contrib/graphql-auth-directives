@@ -52,9 +52,10 @@
   "dependencies": {
     "apollo-errors": "^1.9.0",
     "graphql-tools": "^4.0.7",
-    "jsonwebtoken": "^8.3.0"
+    "jsonwebtoken": "^8.3.0",
+    "graphql": "^15.4.0"
   },
   "peerDependencies": {
-    "graphql": "~14.x"
+    "graphql": "~15.x"
   }
 }
