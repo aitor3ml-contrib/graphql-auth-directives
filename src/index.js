@@ -90,6 +90,7 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
         expectedScopes.some(scope => scopes.indexOf(scope) !== -1) ||
         process.env.NOSCOPECHECK == "true"
       ) {
+        if (typeof next == "undefined") return result[fieldName];
         return next(result, args, { ...context, user: decoded }, info);
       }
 
@@ -127,6 +128,7 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
           expectedScopes.some(role => scopes.indexOf(role) !== -1) ||
           process.env.NOSCOPECHECK == "true"
         ) {
+          if (typeof next == "undefined") return result[fieldName];
           return next(result, args, { ...context, user: decoded }, info);
         }
         context.req.res.status(403);
@@ -174,6 +176,7 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
         expectedRoles.some(role => roles.indexOf(role) !== -1) ||
         process.env.NOROLECHECK == "true"
       ) {
+        if (typeof next == "undefined") return result[fieldName];
         return next(result, args, { ...context, user: decoded }, info);
       }
 
@@ -209,6 +212,7 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
           expectedRoles.some(role => roles.indexOf(role) !== -1) ||
           process.env.NOROLECHECK == "true"
         ) {
+          if (typeof next == "undefined") return result[fieldName];
           return next(result, args, { ...context, user: decoded }, info);
         }
         context.req.res.status(403);
@@ -240,6 +244,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
       field.resolve = function(result, args, context, info) {
         const decoded = verifyAndDecodeToken({ context }); // will throw error if not valid signed jwt
+        if (typeof next == "undefined") return result[fieldName];
         return next(result, args, { ...context, user: decoded }, info);
       };
     });
@@ -250,6 +255,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
     field.resolve = function(result, args, context, info) {
       const decoded = verifyAndDecodeToken({ context });
+      if (typeof next == "undefined") return result[fieldName];
       return next(result, args, { ...context, user: decoded }, info);
     };
   }
