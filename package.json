@@ -1,11 +1,11 @@
 {
-  "name": "@aitor3ml/graphql-auth-directives",
-  "version": "2.2.9",
-  "description": "Add authorization to your GraphQL API using schema directives. Forked https://github.com/grand-stack/graphql-auth-directives.git",
+  "name": "graphql-auth-directives",
+  "version": "2.2.1",
+  "description": "Add authorization to your GraphQL API using schema directives.",
   "main": "./dist/index.js",
   "scripts": {
     "start": "nodemon ./examples/index.js --exec babel-node -e js",
-    "start-test-setup": "nodemon ./test/helpers/test-setup.js --exec babel-node -e js",
+    "start-test-setup": "babel-node ./test/helpers/test-setup.js",
     "test": "ava test/*.js",
     "build": "babel src --out-dir dist",
     "precommit": "lint-staged",
@@ -14,17 +14,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aitor3ml-contrib/graphql-auth-directives"
+    "url": "git+https://github.com/grand-stack/graphql-auth-directives.git"
   },
   "devDependencies": {
-    "@babel/cli": "^7.7.0",
+    "@babel/cli": "^7.12.13",
     "@babel/core": "^7.7.2",
     "@babel/node": "^7.7.0",
     "@babel/preset-env": "^7.7.1",
-    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-cache-inmemory": "^1.4.2",
     "apollo-client": "^2.6.10",
     "apollo-link-http": "^1.5.17",
-    "apollo-server": "^2.19.0",
+    "apollo-server": "^2.16.1",
     "ava": "^3.4.0",
     "dotenv": "^6.2.0",
     "husky": "^1.1.2",
@@ -37,12 +37,12 @@
     "authorization",
     "neo4j"
   ],
-  "author": "Aitor Martin",
+  "author": "William Lyon",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/aitor3ml-contrib/graphql-auth-directives/issues"
+    "url": "https://github.com/grand-stack/graphql-auth-directives/issues"
   },
-  "homepage": "https://github.com/aitor3ml-contrib/graphql-auth-directives#readme",
+  "homepage": "https://github.com/grand-stack/graphql-auth-directives#readme",
   "lint-staged": {
     "*.{js,json,css}": [
       "prettier --write",
@@ -51,10 +51,10 @@
   },
   "dependencies": {
     "apollo-errors": "^1.9.0",
-    "graphql-tools": "^5.0.0",
-    "jsonwebtoken": "^8.5.1"
+    "graphql-tools": "^4.0.7",
+    "jsonwebtoken": "^8.3.0"
   },
   "peerDependencies": {
-    "graphql": "~14.x"
+    "graphql": "~14.x || ~15.x"
   }
 }
