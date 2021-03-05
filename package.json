@@ -1,11 +1,11 @@
 {
-  "name": "graphql-auth-directives",
-  "version": "2.2.1",
-  "description": "Add authorization to your GraphQL API using schema directives.",
+  "name": "@aitor3ml/graphql-auth-directives",
+  "version": "2.2.9",
+  "description": "Add authorization to your GraphQL API using schema directives. Forked https://github.com/grand-stack/graphql-auth-directives.git",
   "main": "./dist/index.js",
   "scripts": {
     "start": "nodemon ./examples/index.js --exec babel-node -e js",
-    "start-test-setup": "babel-node ./test/helpers/test-setup.js",
+    "start-test-setup": "nodemon ./test/helpers/test-setup.js --exec babel-node -e js",
     "test": "ava test/*.js",
     "build": "babel src --out-dir dist",
     "precommit": "lint-staged",
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/grand-stack/graphql-auth-directives.git"
+    "url": "git+https://github.com/aitor3ml-contrib/graphql-auth-directives"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.13",
