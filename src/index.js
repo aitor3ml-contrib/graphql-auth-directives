@@ -86,20 +86,11 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
           decoded["scope"] ||
           [];
 
-      if (
-        expectedScopes.some(scope => scopes.indexOf(scope) !== -1) ||
-        process.env.NOSCOPECHECK == "true"
-      ) {
-        return next(result, args, { ...context, user: decoded }, info);
-      }
+      if (process.env.NOSCOPECHECK != "true")
+        check(field, expectedScopes, scopes, context, args, info);
 
-      context.req.res.status(403);
-      throw new AuthorizationError({
-        message:
-          "You are not authorized for this resource (expectedScopes:" +
-          expectedScopes +
-          "):"
-      });
+      if (typeof next == "undefined") return result[fieldName];
+      return next(result, args, { ...context, user: decoded }, info);
     };
   }
 
@@ -123,19 +114,11 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
             decoded["scope"] ||
             [];
 
-        if (
-          expectedScopes.some(role => scopes.indexOf(role) !== -1) ||
-          process.env.NOSCOPECHECK == "true"
-        ) {
-          return next(result, args, { ...context, user: decoded }, info);
-        }
-        context.req.res.status(403);
-        throw new AuthorizationError({
-          message:
-            "You are not authorized for this resource (expectedScopes:" +
-            expectedScopes +
-            ")"
-        });
+        if (process.env.NOSCOPECHECK != "true")
+          check(field, expectedScopes, scopes, context, args, info);
+
+        if (typeof next == "undefined") return result[fieldName];
+        return next(result, args, { ...context, user: decoded }, info);
       };
     });
   }
@@ -170,20 +153,11 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
           decoded["role"] ||
           [];
 
-      if (
-        expectedRoles.some(role => roles.indexOf(role) !== -1) ||
-        process.env.NOROLECHECK == "true"
-      ) {
-        return next(result, args, { ...context, user: decoded }, info);
-      }
+      if (process.env.NOROLECHECK != "true")
+        check(field, expectedRoles, roles, context, args, info);
 
-      context.req.res.status(403);
-      throw new AuthorizationError({
-        message:
-          "You are not authorized for this resource (expectedRoles:" +
-          expectedRoles +
-          ")"
-      });
+      if (typeof next == "undefined") return result[fieldName];
+      return next(result, args, { ...context, user: decoded }, info);
     };
   }
 
@@ -205,19 +179,11 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
             decoded["role"] ||
             [];
 
-        if (
-          expectedRoles.some(role => roles.indexOf(role) !== -1) ||
-          process.env.NOROLECHECK == "true"
-        ) {
-          return next(result, args, { ...context, user: decoded }, info);
-        }
-        context.req.res.status(403);
-        throw new AuthorizationError({
-          message:
-            "You are not authorized for this resource (expectedRoles:" +
-            expectedRoles +
-            ")"
-        });
+        if (process.env.NOROLECHECK != "true")
+          check(field, expectedRoles, roles, context, args, info);
+
+        if (typeof next == "undefined") return result[fieldName];
+        return next(result, args, { ...context, user: decoded }, info);
       };
     });
   }
@@ -240,6 +206,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
       field.resolve = function(result, args, context, info) {
         const decoded = verifyAndDecodeToken({ context }); // will throw error if not valid signed jwt
+        if (typeof next == "undefined") return result[fieldName];
         return next(result, args, { ...context, user: decoded }, info);
       };
     });
@@ -250,7 +217,17 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
     field.resolve = function(result, args, context, info) {
       const decoded = verifyAndDecodeToken({ context });
+      if (typeof next == "undefined") return result[fieldName];
       return next(result, args, { ...context, user: decoded }, info);
     };
   }
+}
+
+function check(field, expected, list, context, args, info) {
+  if (expected.some(item => list.includes(item))) return true;
+  context.req.res.status(403);
+  throw new AuthorizationError({
+    message:
+      "You are not authorized for this resource (expected:" + expected + "):"
+  });
 }
