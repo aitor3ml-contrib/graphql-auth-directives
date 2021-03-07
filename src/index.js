@@ -89,7 +89,7 @@ export class HasScopeDirective extends SchemaDirectiveVisitor {
       if (process.env.NOSCOPECHECK != "true")
         check(field, expectedScopes, scopes, context, args, info);
 
-      if (typeof next == "undefined") return result[fieldName];
+      if (typeof next == "undefined") return result[info.fieldName];
       return next(result, args, { ...context, user: decoded }, info);
     };
   }
@@ -156,7 +156,7 @@ export class HasRoleDirective extends SchemaDirectiveVisitor {
       if (process.env.NOROLECHECK != "true")
         check(field, expectedRoles, roles, context, args, info);
 
-      if (typeof next == "undefined") return result[fieldName];
+      if (typeof next == "undefined") return result[info.fieldName];
       return next(result, args, { ...context, user: decoded }, info);
     };
   }
@@ -217,7 +217,7 @@ export class IsAuthenticatedDirective extends SchemaDirectiveVisitor {
 
     field.resolve = function(result, args, context, info) {
       const decoded = verifyAndDecodeToken({ context });
-      if (typeof next == "undefined") return result[fieldName];
+      if (typeof next == "undefined") return result[info.fieldName];
       return next(result, args, { ...context, user: decoded }, info);
     };
   }
